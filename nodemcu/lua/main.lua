@@ -26,7 +26,7 @@ function module.start()
       local gdstring = ""
 
       if string.find(config.Model, "BME") then
-        status, temp, humi, baro, dew = bme.read()
+        status, temp, baro = bme.read()
       else
         status, temp, humi, temp_dec, humi_dec = dht.read(config.DHT22)
       end
@@ -40,16 +40,12 @@ function module.start()
       --      print("33")
       local majorVer, minorVer, devVer, chipid, flashid, flashsize, flashmode, flashspeed = node.info()
       --      print("35")
-      print("Status: "..status.."\nTemp: "..temp.."\nHumi: "..humi.."\nMoisture: "..moist_value..
-      "\nBaro: "..baro.."\nDew: "..dew.."\n")
+      print("Status: "..status.."\nTemp: "..temp)
       local response = { "HTTP/1.1 200 OK\n", "Server: ESP (nodeMCU) "..chipid.."\n",
         "Content-Type: application/json\n",
         "Access-Control-Allow-Origin: *\n\n",
-        "{ \"Hostname\": \""..config.ID.."\", \"Model\": \""..config.Model.."\", \"Version\": \""..config.Version..
-        "\", \"Firmware\": \""..majorVer.."."..minorVer.."."..devVer.."\", \"Data\": {\"Temperature\": "..temp..
-          ", \"Humidity\": "..humi..", \"Moisture\": "..moist_value..
-        ", \"Status\": "..status..", \"Barometer\": "..baro..", \"Dew\": "..dew..""..gdstring.." }}\n" }
-
+        "{\"Temperature\":"..temp.."}"
+        }
         local function sender (conn)
           if #response > 0 then conn:send(table.remove(response, 1))
           else conn:close()

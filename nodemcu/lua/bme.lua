@@ -7,7 +7,7 @@ function module.read()
   local device = bme280.setup()
   local status, temp, humi, baro, dew
 
-  if device == 2 then
+  if device == 1 then
     status = 0
     local T,P,H,QNH = bme280.read()
     while T == nil do
@@ -17,10 +17,7 @@ function module.read()
 
     baro = P / 1000
     temp = T / 100
-    humi = H / 1000
-
-    local D = bme280.dewpoint(H, T)
-    dew = D / 100
+    
 
   else
 
@@ -29,11 +26,11 @@ function module.read()
     else
       status = 1
     end
-    print( "BME280 Read Error %d", device )
+    print( "BME280 Read Error " .. device )
 
   end
 
-  return status, temp, humi, baro, dew
+  return status, temp, baro
 
 end
 
