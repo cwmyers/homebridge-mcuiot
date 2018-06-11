@@ -8,7 +8,7 @@ if string.find(config.Model, "BME") then
   bme = require("bme")
   print("Heap Available: -b " .. node.heap())
 end
-app = require("main")
+app = require("publisher")
 print("Heap Available: -m " .. node.heap())
 if string.find(config.Model, "GD") then
   gd = require("GarageDoorOpenSensor")
