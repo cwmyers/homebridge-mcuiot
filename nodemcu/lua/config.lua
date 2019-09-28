@@ -5,7 +5,7 @@ module.Model = "BME"
 module.Version = "1.5"
 
 -- LED state
-module.ledState = 2 -- 0: fully disabled, 1: LEDs on, 2: Connected off (Boot/Error only)
+module.ledState = 0 -- 0: fully disabled, 1: LEDs on, 2: Connected off (Boot/Error only)
 
 -- BME280 settings
 
@@ -25,7 +25,6 @@ module.YL69Power = 7 -- D7
 
 module.ID = wifi.sta.gethostname()
 
-module.ledRed = 0 -- gpio16
 module.ledBlue = 4 -- gpio2
 
 module.localMqttServer = "192.168.1.198"

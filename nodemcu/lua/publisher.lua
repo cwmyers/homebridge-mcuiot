@@ -20,8 +20,8 @@ function module.publish(id, temp, baro)
     m1:connect("io.adafruit.com", 1883, 0, function(client)
       print("connected to adafruit")
       
-      client:publish(passwords.adafruitUsername .."/feeds/temp" , temp, 0, 1, function(client) print("sent temp") end)
-      client:publish(passwords.adafruitUsername .."/feeds/baro" , baro, 0, 1, function(client) print("sent baro") end)
+      client:publish(passwords.adafruitUsername .."/feeds/temp-" .. id , temp, 0, 1, function(client) print("sent temp") end)
+--      client:publish(passwords.adafruitUsername .."/feeds/baro-" .. id , baro, 0, 1, function(client) print("sent baro") end)
     end, function(client, reason)
         print("failed reason: " .. reason)
         end)
@@ -32,13 +32,25 @@ function module.publish(id, temp, baro)
 end
 
 function module.start()
-    tmr.alarm(3, 60000, tmr.ALARM_AUTO, function()
-      local temp = -999
-      local baro = -999
+
+--    while true do
+--      local temp = -999
+--      local baro = -999
+--      
+--      status, temp, baro = bme.read()
+--      print("Temp:" .. temp)
+--      module.publish(config.ID, temp, baro)
+--      node.dsleep(60000000,4)
+--    end 
+    local temp = -999
+    local baro = -999
       
-      status, temp, baro = bme.read()
-      print("Temp:" .. temp)
-      module.publish(config.ID, temp, baro)
+    status, temp, baro = bme.read()
+    print("Temp:" .. temp) 
+    module.publish(config.ID, temp, baro)
+    tmr.alarm(4, 1000, tmr.ALARM_AUTO, function()
+      print("Going into deep sleep")  
+      node.dsleep(300 * 1000000)
     end)
 end
 
